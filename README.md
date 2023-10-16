@@ -18,6 +18,6 @@ http://localhost:8080/api/seed
 
 
 ## Stack Usado
-- TypeOrm Mysql
+- MongoDB
 - NestJs
 
