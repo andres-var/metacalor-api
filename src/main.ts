@@ -6,11 +6,14 @@ import { HttpStatus, Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 import { HttpExceptionFilter } from './common/filters';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   const app = await NestFactory.create(AppModule);
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.useGlobalFilters(new HttpExceptionFilter());
 

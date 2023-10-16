@@ -9,8 +9,10 @@ import {
   Matches,
   MaxLength,
   MinLength,
+  Validate,
 } from 'class-validator';
 import { Match } from 'src/common/decorators/match.decorador';
+import { IsAlreadyEmailConstraint } from 'src/users/constraints';
 
 export class RegisterDto {
   @ApiProperty({ example: 'Jhon' })
@@ -25,6 +27,7 @@ export class RegisterDto {
 
   @ApiProperty({ example: 'jhoe@gmail.com' })
   @IsEmail()
+  @Validate(IsAlreadyEmailConstraint)
   email: string;
 
   @ApiProperty({ example: 'Asdf123456' })

@@ -55,8 +55,8 @@ export class AuthService {
     return user;
   }
 
-  private getJwtToken(_id: string) {
-    return this.jwtService.sign({ _id });
+  private getJwtToken(id: string) {
+    return this.jwtService.sign({ id });
   }
 
   async validateUser(id: string): Promise<User> {

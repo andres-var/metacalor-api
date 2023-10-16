@@ -9,7 +9,9 @@ import {
   MaxLength,
   MinLength,
   IsNotEmpty,
+  Validate,
 } from 'class-validator';
+import { IsAlreadyEmailConstraint } from '../constraints';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'Julio' })
@@ -23,9 +25,10 @@ export class CreateUserDto {
   lastName: string;
 
   @ApiProperty({ example: 'avargas@inprodi.com.mx' })
+  @IsNotEmpty()
   @IsEmail()
   @IsString()
-  @IsNotEmpty()
+  @Validate(IsAlreadyEmailConstraint)
   email: string;
 
   @ApiProperty({ example: 'Asdf123456' })

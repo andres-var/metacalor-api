@@ -5,6 +5,7 @@ import {
   Put,
   Param,
   ParseUUIDPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -13,6 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from 'src/auth/decorators';
 import { User } from './entities/user.entity';
 import { NotFoundResponse } from 'src/common/responses/not-found.response';
+import { ParseObjectIdPipe } from 'src/common/pipes';
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,8 +28,17 @@ export class UsersController {
     description: 'Not Found User',
     type: NotFoundResponse,
   })
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  async findOne(@Param('id', ParseObjectIdPipe) id: string) {
+    const user = await this.usersService.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException({
+        key: 'users',
+        message: 'User not found',
+      });
+    }
+
+    return user;
   }
 
   @Put(':id')
