@@ -5,7 +5,6 @@ import {
   Put,
   Param,
   ParseUUIDPipe,
-  NotFoundException,
 } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -30,13 +29,6 @@ export class UsersController {
   })
   async findOne(@Param('id', ParseObjectIdPipe) id: string) {
     const user = await this.usersService.findOne(id);
-
-    if (!user) {
-      throw new NotFoundException({
-        key: 'users',
-        message: 'User not found',
-      });
-    }
 
     return user;
   }

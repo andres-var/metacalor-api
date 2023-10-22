@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -40,6 +41,13 @@ export class UsersService {
   async findOne(id: string): Promise<User> {
     const user = await this.userModel.findById(id);
 
+    if (!user) {
+      throw new NotFoundException({
+        key: 'users',
+        message: 'User not found',
+      });
+    }
+
     return user;
   }
 
@@ -54,6 +62,23 @@ export class UsersService {
       const user = await this.userModel.findByIdAndUpdate(
         id,
         { ...updateUserDto },
+        { new: true },
+      );
+
+      return user;
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async patchIsVerified(id: string): Promise<User> {
+    try {
+      await this.findOne(id);
+
+      const user = await this.userModel.findByIdAndUpdate(
+        id,
+        { isAccountVerified: true },
         { new: true },
       );
 

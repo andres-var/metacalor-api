@@ -59,6 +59,21 @@ export class AuthService {
     return this.jwtService.sign({ id });
   }
 
+  async verify(id: string) {
+    const user = await this.usersService.findOne(id);
+
+    if (user.isAccountVerified) {
+      throw new BadRequestException({
+        message: 'User is already verified',
+        key: 'auth.alreadyVerified',
+      });
+    }
+
+    await this.usersService.patchIsVerified(id);
+
+    return true;
+  }
+
   async validateUser(id: string): Promise<User> {
     const user = await this.usersService.findOne(id);
 
