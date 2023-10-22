@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { UsersSeeder } from './users.seeder';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { AlimentsSeeder } from './aliments.seeder';
 
 @Injectable()
 export class SeedsService {
@@ -17,8 +18,9 @@ export class SeedsService {
     private connection: Connection,
     private readonly configService: ConfigService,
     private readonly usersSeeder: UsersSeeder,
+    private readonly alimentsSeeder: AlimentsSeeder,
   ) {
-    this.seeders = [this.usersSeeder];
+    this.seeders = [this.usersSeeder, this.alimentsSeeder];
   }
 
   async run() {

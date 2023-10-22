@@ -18,7 +18,7 @@ export class UsersSeeder implements SeederInterface {
       data.push({
         name: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        email: `user${i}@inprodi.com.mx`,
+        email: `user${i}@metacalor.com.mx`,
         password: 'Asdf123456',
         birthday: faker.date.past(),
         height: faker.datatype.float({ min: 1.5, max: 2.0 }),
@@ -33,7 +33,8 @@ export class UsersSeeder implements SeederInterface {
     }
 
     await Bluebird.each(data, async (data) => {
-      await this.usersService.create({ ...data });
+      const user = await this.usersService.create({ ...data });
+      await this.usersService.patchIsVerified(user.id);
     });
   }
 }
