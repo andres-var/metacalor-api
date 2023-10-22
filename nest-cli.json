@@ -6,6 +6,7 @@
     "assets": [
       "mail/images/**/*",
       "mail/templates/**/*",
+      "seeds/**/*",
       { "include": "i18n/**/*", "watchAssets": true }
     ],
     "watchAssets": true
