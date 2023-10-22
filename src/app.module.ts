@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { MongoDBModule } from './mongodb/mongodb.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { MailModule } from './mail/mail.module';
+import { AlimentsModule } from './aliments/aliments.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MailModule } from './mail/mail.module';
     MailModule,
     AuthModule,
     UsersModule,
+    AlimentsModule,
   ],
 })
 export class AppModule {}
