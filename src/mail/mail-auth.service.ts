@@ -13,12 +13,13 @@ export class MailAuthService {
     private config: ConfigService,
   ) {}
 
+  private readonly HOST_API = this.config.get('HOST_API');
   private readonly HOST_FRONTEND = this.config.get('HOST_FRONTEND');
   private readonly PROJECT_NAME = this.config.get('PROJECT_NAME');
   private readonly logger = new Logger(MailAuthService.name);
 
   async sendUserConfirmation(user: User) {
-    const url = `${this.HOST_FRONTEND}/auth/register?token=${user.id}`;
+    const url = `${this.HOST_API}/auth/verify/${user.id}`;
 
     try {
       await this.mailerService.sendMail({
