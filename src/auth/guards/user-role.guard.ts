@@ -21,6 +21,6 @@ export class UserRoleGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    throw new ForbiddenException();
+    return true;
   }
 }

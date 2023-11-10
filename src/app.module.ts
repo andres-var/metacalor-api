@@ -8,6 +8,7 @@ import { MongoDBModule } from './mongodb/mongodb.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { MailModule } from './mail/mail.module';
 import { AlimentsModule } from './aliments/aliments.module';
+import { DishesModule } from './dishes/dishes.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AlimentsModule } from './aliments/aliments.module';
     AuthModule,
     UsersModule,
     AlimentsModule,
+    DishesModule,
   ],
 })
 export class AppModule {}

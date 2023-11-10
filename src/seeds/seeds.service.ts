@@ -28,7 +28,7 @@ export class SeedsService {
       throw new Error('Seeds can only be run in development mode');
     }
 
-    await this.connection.dropDatabase();
+    //await this.connection.dropDatabase();
     await this.connection.syncIndexes();
 
     await Bluebird.each(this.seeders, async (seeder: SeederInterface) => {
