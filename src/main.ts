@@ -21,7 +21,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  app.enableCors({ origin: process.env.HOST_FRONTEND });
+  //   app.enableCors({ origin: process.env.HOST_FRONTEND });
+  app.enableCors();
 
   app.useGlobalPipes(
     new ValidationPipe({
