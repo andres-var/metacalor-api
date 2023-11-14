@@ -9,6 +9,7 @@ import { SeedsModule } from './seeds/seeds.module';
 import { MailModule } from './mail/mail.module';
 import { AlimentsModule } from './aliments/aliments.module';
 import { DishesModule } from './dishes/dishes.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DishesModule } from './dishes/dishes.module';
     UsersModule,
     AlimentsModule,
     DishesModule,
+    ProfileModule,
   ],
 })
 export class AppModule {}

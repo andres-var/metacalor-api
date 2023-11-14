@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -81,6 +82,26 @@ export class UsersService {
         { isAccountVerified: true },
         { new: true },
       );
+
+      return user;
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async remove(id: string): Promise<User> {
+    try {
+      const user = await this.findOne(id);
+
+      const isDeleted = await this.userModel.deleteOne({ _id: id });
+
+      if (isDeleted.deletedCount === 0) {
+        throw new ConflictException({
+          key: 'users',
+          message: 'User not deleted',
+        });
+      }
 
       return user;
     } catch (error) {

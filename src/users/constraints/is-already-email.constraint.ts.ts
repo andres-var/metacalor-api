@@ -23,8 +23,6 @@ export class IsAlreadyEmailConstraint implements ValidatorConstraintInterface {
     const email = validationArguments.value;
     const property = validationArguments.property;
 
-    console.log(email);
-
     return `${property} ${email} is already exist`;
   }
 }
