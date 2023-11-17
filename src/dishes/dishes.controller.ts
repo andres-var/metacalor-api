@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Query, ParseIntPipe, InternalServerErrorException } from '@nestjs/common';
 import { DishesService } from './dishes.service';
 import { Dish, DishSchema } from './entities/dish.entity';
 import { CreateDishDto } from './dto/create-dish.dto';
@@ -36,19 +36,16 @@ export class DishesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateDishDto: UpdateDishDto) {
-    const dish = await this.dishesService.findOne(id);
-    if(!dish){
-      throw new NotFoundException(`Dish with id ${id} not found`);
-    }
+  async update(@Param('id', ParseObjectIdPipe) id: string, @Body() updateDishDto: UpdateDishDto) {
+    await this.dishesService.findOne(id);
     return this.dishesService.update(id, updateDishDto);
   }
 
-  @Delete('delete')
-  async deleteByName(@Body('name') name: string){
-    const dish = await this.dishesService.findOneByName(name);
-    
-    return this.dishesService.remove(dish);
+
+  @Delete(':id')
+  async remove(@Param('id', ParseObjectIdPipe)id: string){
+      await this.dishesService.findOne(id);
+      await this.dishesService.remove(id);
+      return { message: 'Dish deleted successfully'};
   }
- 
 }

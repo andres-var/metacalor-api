@@ -92,9 +92,12 @@ export class DishesService {
 
   async remove(id: string): Promise<any> {
     try{
-      return this.dishModel.deleteOne({_id:id}).exec();
+      const result = await this.dishModel.deleteOne({_id:id}).exec();
+      if(result.deletedCount === 0){
+        throw new NotFoundException(`Dish with id ${id} not found`);
+      }
     }catch(error){
-      this.logger.error(error);
+      this.logger.error(error); 
       throw new InternalServerErrorException();
     }
   }
