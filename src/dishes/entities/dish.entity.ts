@@ -5,6 +5,7 @@ import { HydratedDocument } from 'mongoose';
 import { Aliment } from 'src/aliments/entities/aliment.entity';
 import mongoose from 'mongoose';
 import { User } from 'src/users/entities/user.entity';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 
 @Schema({timestamps : true})
@@ -27,6 +28,8 @@ export type DishDocument = HydratedDocument<Dish>;
 
 //Crea un esquema de base de datos a partir de la clase Dish
 export const DishSchema = SchemaFactory.createForClass(Dish);
+
+DishSchema.plugin(mongoosePaginate);
 
 DishSchema.set('toJSON', {
     virtuals: true,

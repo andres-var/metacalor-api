@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateDishDto } from './dto/create-dish.dto';
 import { UpdateDishDto } from './dto/update-dish.dto';
-import { Model } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Dish } from './entities/dish.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -17,7 +17,7 @@ import { AlimentsService } from 'src/aliments/aliments.service';
 export class DishesService {
   constructor(
     //Inyecta el modelo Dish para poder interactuar con la BD 
-    @InjectModel (Dish.name) private dishModel: Model<Dish>,
+    @InjectModel (Dish.name) private readonly dishModel: PaginateModel<Dish>,
     private alimentService: AlimentsService
   ){}
   //Crea un objeto Logger para registrar mensajes de información en la aplicación
@@ -41,16 +41,17 @@ export class DishesService {
   }
 
   //Devuelve todos los documentos de la colección de Mongoose 
-  async findAll(): Promise<Dish[]> {
-    return this.dishModel.find().exec();
+  async findAll(page: number, limit: number): Promise<any> {
+    const options = {
+      page: page || 1,
+      limit: limit || 10,
+    };
+  
+    return this.dishModel.paginate({}, options);
   }
 
   async findOne(id: string) :Promise<Dish> {
-    const dish = await this.dishModel.findById(id, {
-      aliments:true
-    },{
-      populate:['aliments']
-    });
+    const dish = await this.dishModel.findById(id).populate('aliments').exec();
 
     if(!dish){
       throw new NotFoundException({
@@ -61,17 +62,17 @@ export class DishesService {
     return dish;
   }
 
-  async findOneByName (name: string): Promise<Dish> {
-    const dish = await this.dishModel.findOne({name});
+  async findOneByName (name: string): Promise<string> {
+    const dish = await this.dishModel.findOne({name: name}).exec();
     
     if(!dish){
       throw new NotFoundException({
         key: 'dishes',
-        messgae: 'Dish not found',
+        message: 'Dish not found',
       });
     }
 
-    return dish;
+    return dish._id.toString();
   }
 
   
@@ -85,11 +86,16 @@ export class DishesService {
       return dish;
     }catch(error){
       this.logger.error(error);
-      throw InternalServerErrorException;
+      throw new InternalServerErrorException();
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dish`;
+  async remove(id: string): Promise<any> {
+    try{
+      return this.dishModel.deleteOne({_id:id}).exec();
+    }catch(error){
+      this.logger.error(error);
+      throw new InternalServerErrorException();
+    }
   }
 }
