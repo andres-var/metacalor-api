@@ -10,6 +10,7 @@ import { MailModule } from './mail/mail.module';
 import { AlimentsModule } from './aliments/aliments.module';
 import { DishesModule } from './dishes/dishes.module';
 import { ProfileModule } from './profile/profile.module';
+import { RemindersModule } from './reminders/reminders.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProfileModule } from './profile/profile.module';
     AlimentsModule,
     DishesModule,
     ProfileModule,
+    RemindersModule,
   ],
 })
 export class AppModule {}

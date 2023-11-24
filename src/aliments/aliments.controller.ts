@@ -1,7 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AlimentsService } from './aliments.service';
+import { Auth } from 'src/auth/decorators';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Aliments')
 @Controller('aliments')
+@Auth()
 export class AlimentsController {
   constructor(private readonly alimentsService: AlimentsService) {}
 
