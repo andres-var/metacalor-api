@@ -6,12 +6,12 @@ import {
 import { CreateAlimentDto } from './dto/create-aliment.dto';
 import { Aliment } from './entities/aliment.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
 
 @Injectable()
 export class AlimentsService {
   constructor(
-    @InjectModel(Aliment.name) private alimentModel: Model<Aliment>,
+    @InjectModel(Aliment.name) private alimentModel: PaginateModel<Aliment>,
   ) {}
 
   private readonly logger = new Logger(AlimentsService.name);
@@ -31,15 +31,11 @@ export class AlimentsService {
     }
   }
 
-  findAll() {
-    return `This action returns all aliments`;
+  async findAll() {
+    return await this.alimentModel.paginate({}, {});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} aliment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} aliment`;
+  async findOne(id: string) {
+    return await this.alimentModel.findById(id);
   }
 }

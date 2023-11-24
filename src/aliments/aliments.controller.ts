@@ -2,6 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { AlimentsService } from './aliments.service';
 import { Auth } from 'src/auth/decorators';
 import { ApiTags } from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/common/pipes';
 
 @ApiTags('Aliments')
 @Controller('aliments')
@@ -15,7 +16,7 @@ export class AlimentsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.alimentsService.findOne(+id);
+  findOne(@Param('id', ParseObjectIdPipe) id: string) {
+    return this.alimentsService.findOne(id);
   }
 }

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 @Schema({ timestamps: true })
 export class Aliment {
@@ -37,6 +38,8 @@ export class Aliment {
 export type AlimentDocument = HydratedDocument<Aliment>;
 
 export const AlimentSchema = SchemaFactory.createForClass(Aliment);
+
+AlimentSchema.plugin(mongoosePaginate);
 
 AlimentSchema.set('toJSON', {
   virtuals: true,

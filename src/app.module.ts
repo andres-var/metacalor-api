@@ -11,6 +11,8 @@ import { AlimentsModule } from './aliments/aliments.module';
 import { DishesModule } from './dishes/dishes.module';
 import { ProfileModule } from './profile/profile.module';
 import { RemindersModule } from './reminders/reminders.module';
+import { CaloriesConsumedModule } from './caloriesConsumed/caloriesConsumed.module';
+import { CaloriesExpendedModule } from './caloriesExpended/caloriesExpended.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { RemindersModule } from './reminders/reminders.module';
     DishesModule,
     ProfileModule,
     RemindersModule,
+    CaloriesConsumedModule,
+    CaloriesExpendedModule,
   ],
 })
 export class AppModule {}

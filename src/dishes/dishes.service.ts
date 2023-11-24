@@ -1,59 +1,57 @@
-import { 
+import {
   Injectable,
   InternalServerErrorException,
-  Logger, 
-  NotFoundException
+  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateDishDto } from './dto/create-dish.dto';
 import { UpdateDishDto } from './dto/update-dish.dto';
-import { Model, PaginateModel } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Dish } from './entities/dish.entity';
 import { User } from 'src/users/entities/user.entity';
 import { AlimentsService } from 'src/aliments/aliments.service';
 
-
 @Injectable()
 export class DishesService {
   constructor(
-    //Inyecta el modelo Dish para poder interactuar con la BD 
-    @InjectModel (Dish.name) private readonly dishModel: PaginateModel<Dish>,
-    private alimentService: AlimentsService
-  ){}
+    //Inyecta el modelo Dish para poder interactuar con la BD
+    @InjectModel(Dish.name) private readonly dishModel: PaginateModel<Dish>,
+    private alimentService: AlimentsService,
+  ) {}
   //Crea un objeto Logger para registrar mensajes de información en la aplicación
   private readonly logger = new Logger(DishesService.name);
 
-
-  async create(createDishDto: CreateDishDto, user: User): Promise <Dish> {
-    try{
+  async create(createDishDto: CreateDishDto, user: User): Promise<Dish> {
+    try {
       const dish = new this.dishModel({
         ...createDishDto,
-        user, 
+        user,
       });
 
       await dish.save();
       return dish;
-
-    }catch (error){
+    } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException();
     }
   }
 
-  //Devuelve todos los documentos de la colección de Mongoose 
-  async findAll(page: number, limit: number): Promise<any> {
+  //Devuelve todos los documentos de la colección de Mongoose
+  async findAll(page: number, limit: number) {
     const options = {
       page: page || 1,
       limit: limit || 10,
     };
-  
-    return this.dishModel.paginate({}, options);
+
+    const dishes = await this.dishModel.paginate({}, options);
+    return dishes;
   }
 
-  async findOne(id: string) :Promise<Dish> {
+  async findOne(id: string): Promise<Dish> {
     const dish = await this.dishModel.findById(id).populate('aliments').exec();
 
-    if(!dish){
+    if (!dish) {
       throw new NotFoundException({
         key: 'dishes',
         message: 'Dish not found',
@@ -62,10 +60,10 @@ export class DishesService {
     return dish;
   }
 
-  async findOneByName (name: string): Promise<string> {
-    const dish = await this.dishModel.findOne({name: name}).exec();
-    
-    if(!dish){
+  async findOneByName(name: string): Promise<string> {
+    const dish = await this.dishModel.findOne({ name: name }).exec();
+
+    if (!dish) {
       throw new NotFoundException({
         key: 'dishes',
         message: 'Dish not found',
@@ -75,29 +73,28 @@ export class DishesService {
     return dish._id.toString();
   }
 
-  
-  async update(id: string, updateDishDto: UpdateDishDto): Promise <Dish> {
-    try{
+  async update(id: string, updateDishDto: UpdateDishDto): Promise<Dish> {
+    try {
       const dish = await this.dishModel.findByIdAndUpdate(
         id,
-        {... updateDishDto},
-        {new: true},
-        );
+        { ...updateDishDto },
+        { new: true },
+      );
       return dish;
-    }catch(error){
+    } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException();
     }
   }
 
   async remove(id: string): Promise<any> {
-    try{
-      const result = await this.dishModel.deleteOne({_id:id}).exec();
-      if(result.deletedCount === 0){
+    try {
+      const result = await this.dishModel.deleteOne({ _id: id }).exec();
+      if (result.deletedCount === 0) {
         throw new NotFoundException(`Dish with id ${id} not found`);
       }
-    }catch(error){
-      this.logger.error(error); 
+    } catch (error) {
+      this.logger.error(error);
       throw new InternalServerErrorException();
     }
   }
