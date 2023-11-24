@@ -9,7 +9,8 @@ import { AlimentsModule } from 'src/aliments/aliments.module';
 @Module({
   controllers: [DishesController],
   providers: [DishesService],
-  imports : [MongooseModule.forFeature([{name: Dish.name, schema: DishSchema}]),AlimentsModule]
+  imports : [MongooseModule.forFeature([{name: Dish.name, schema: DishSchema}]),AlimentsModule],
+  exports: [DishesService]
 
 })
 export class DishesModule {}

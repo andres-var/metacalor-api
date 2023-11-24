@@ -41,13 +41,15 @@ export class DishesService {
   }
 
   //Devuelve todos los documentos de la colección de Mongoose 
-  async findAll(page: number, limit: number): Promise<any> {
+  async findAll(page: number, limit: number){
     const options = {
       page: page || 1,
       limit: limit || 10,
     };
   
-    return this.dishModel.paginate({}, options);
+    const dishes = await this.dishModel.paginate({}, options);
+    console.log(dishes);
+    return dishes; 
   }
 
   async findOne(id: string) :Promise<Dish> {
