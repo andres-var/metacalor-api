@@ -52,7 +52,10 @@ export class RemindersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.remindersService.remove(id);
+  remove(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @CurrentUser() user: User,
+  ) {
+    return this.remindersService.remove(id, user);
   }
 }

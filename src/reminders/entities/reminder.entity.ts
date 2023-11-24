@@ -11,11 +11,11 @@ export class Reminder {
   @Prop()
   name: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true })
   user: User;
 
-  @ApiProperty({ example: '13:00', description: 'Formato HH:MM' })
-  hora: string;
+  @Prop()
+  hour: string;
 }
 
 //Documento de Mongoose con instancia de la clase Reminder

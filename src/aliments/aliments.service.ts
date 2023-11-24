@@ -6,7 +6,7 @@ import {
 import { CreateAlimentDto } from './dto/create-aliment.dto';
 import { Aliment } from './entities/aliment.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 
 @Injectable()
 export class AlimentsService {

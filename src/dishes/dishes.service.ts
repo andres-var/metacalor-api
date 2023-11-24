@@ -10,14 +10,12 @@ import { PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Dish } from './entities/dish.entity';
 import { User } from 'src/users/entities/user.entity';
-import { AlimentsService } from 'src/aliments/aliments.service';
 
 @Injectable()
 export class DishesService {
   constructor(
     //Inyecta el modelo Dish para poder interactuar con la BD
     @InjectModel(Dish.name) private readonly dishModel: PaginateModel<Dish>,
-    private alimentService: AlimentsService,
   ) {}
   //Crea un objeto Logger para registrar mensajes de información en la aplicación
   private readonly logger = new Logger(DishesService.name);

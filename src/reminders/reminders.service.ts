@@ -1,5 +1,6 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import {
   BadRequestException,
   Injectable,
@@ -10,6 +11,7 @@ import { CreateReminderDto } from './dto/create-reminder.dto';
 import { UpdateReminderDto } from './dto/update-reminder.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Reminder } from './entities/reminder.entity';
+import { MailRemindersService } from 'src/mail/mail-reminders.service';
 
 @Injectable()
 export class RemindersService {
@@ -17,6 +19,7 @@ export class RemindersService {
 
   constructor(
     @InjectModel(Reminder.name) private reminderModel: Model<Reminder>,
+    private mailRemindersService: MailRemindersService,
   ) {}
   async create(createReminderDto: CreateReminderDto, user: User) {
     const reminders = await this.findAll(user);
@@ -60,7 +63,48 @@ export class RemindersService {
     return reminder;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} reminder`;
+  async remove(id: string, user: User) {
+    const reminder = await this.findOne(id, user);
+
+    const result = await this.reminderModel.deleteOne({ _id: id }).exec();
+
+    if (result.deletedCount === 0) {
+      throw new NotFoundException('Reminder not found');
+    }
+
+    return reminder;
+  }
+
+  async sendEmails() {
+    const reminders = await this.reminderModel
+      .find({}, {}, { populate: ['user'] })
+      .exec();
+    const now = new Date().toLocaleString(undefined, {
+      timeZone: 'America/Mexico_City',
+    });
+
+    const hour = Number(now.split(' ')[1].split(':')[0]);
+
+    if (reminders.length === 0) return;
+
+    const sendEmailPromises = reminders.map(async (reminder) => {
+      const reminderHour = Number(reminder.hour.split(':')[0]);
+
+      if (reminderHour === hour) {
+        await this.mailRemindersService.send(reminder.user, reminder.name);
+        console.log('Email sent');
+      }
+    });
+
+    try {
+      await Promise.all(sendEmailPromises);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  @Cron(CronExpression.EVERY_30_MINUTES)
+  handleCron() {
+    this.sendEmails();
   }
 }
