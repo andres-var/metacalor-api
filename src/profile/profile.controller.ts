@@ -4,7 +4,9 @@ import { ProfileService } from './profile.service';
 import { Auth, CurrentUser } from 'src/auth/decorators';
 import { User } from 'src/users/entities/user.entity';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Profile')
 @Controller('profile')
 @Auth()
 export class ProfileController {

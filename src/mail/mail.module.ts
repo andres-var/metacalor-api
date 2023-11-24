@@ -6,6 +6,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 
 import { MailAuthService } from './mail-auth.service';
 import { CommonModule } from 'src/common/common.module';
+import { MailRemindersService } from './mail-reminders.service';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { CommonModule } from 'src/common/common.module';
     ConfigModule,
     CommonModule,
   ],
-  providers: [MailAuthService],
-  exports: [MailAuthService],
+  providers: [MailAuthService, MailRemindersService],
+  exports: [MailAuthService, MailRemindersService],
 })
 export class MailModule {}
