@@ -46,6 +46,14 @@ export class User {
   @Prop({ required: true })
   imc: number;
 
+  @ApiProperty({ example: 1245 })
+  @Prop({ default: 0 })
+  score: number;
+
+  @ApiProperty({ example: 1245 })
+  @Prop({ default: 0 })
+  streak: number;
+
   @ApiProperty({ example: 'admin' })
   @Prop({ required: false, default: '' })
   avatar: string;
