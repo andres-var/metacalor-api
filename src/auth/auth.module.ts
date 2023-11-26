@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategies';
 import { CommonModule } from 'src/common/common.module';
 import { UsersModule } from 'src/users/users.module';
 import { MailModule } from 'src/mail/mail.module';
+import { DishesModule } from 'src/dishes/dishes.module';
 
 @Module({
   controllers: [AuthController],
@@ -17,6 +18,7 @@ import { MailModule } from 'src/mail/mail.module';
     ConfigModule,
     CommonModule,
     UsersModule,
+    DishesModule,
     MailModule,
 
     PassportModule.register({ defaultStrategy: 'jwt' }),

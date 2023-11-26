@@ -10,7 +10,7 @@ import { PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Dish } from './entities/dish.entity';
 import { User } from 'src/users/entities/user.entity';
-
+import * as dishesJson from './data/dishes.json';
 @Injectable()
 export class DishesService {
   constructor(
@@ -29,6 +29,20 @@ export class DishesService {
 
       await dish.save();
       return dish;
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async createDefaultDishes(userId: string): Promise<void> {
+    try {
+      const dishes = dishesJson.map((dish) => ({
+        ...dish,
+        user: userId,
+      }));
+
+      await this.dishModel.insertMany(dishes);
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException();

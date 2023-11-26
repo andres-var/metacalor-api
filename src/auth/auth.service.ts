@@ -10,6 +10,7 @@ import { User } from 'src/users/entities/user.entity';
 import { BcryptAdapter } from 'src/common/adapters/bcrypt.adapter';
 import { MailAuthService } from 'src/mail/mail-auth.service';
 import { RegisterDto } from './dto/register.dto';
+import { DishesService } from 'src/dishes/dishes.service';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly bcryptAdapter: BcryptAdapter,
     private readonly mailAuthService: MailAuthService,
+    private readonly dishesService: DishesService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -49,6 +51,7 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     const user = await this.usersService.create(registerDto);
+    await this.dishesService.createDefaultDishes(user.id);
 
     await this.mailAuthService.sendUserConfirmation(user);
 
