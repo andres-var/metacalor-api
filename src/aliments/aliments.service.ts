@@ -7,6 +7,7 @@ import { CreateAlimentDto } from './dto/create-aliment.dto';
 import { Aliment } from './entities/aliment.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
+import { BaseQueryDto } from 'src/common/dto';
 
 @Injectable()
 export class AlimentsService {
@@ -31,8 +32,15 @@ export class AlimentsService {
     }
   }
 
-  async findAll() {
-    return await this.alimentModel.paginate({}, {});
+  async findAll(baseQueryDto: BaseQueryDto<Aliment>) {
+    return await this.alimentModel.paginate(
+      { ...baseQueryDto.filters },
+      {
+        page: baseQueryDto.page,
+        limit: baseQueryDto.limit,
+        sort: baseQueryDto.sort,
+      },
+    );
   }
 
   async findOne(id: string) {

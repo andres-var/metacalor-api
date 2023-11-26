@@ -1,8 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AlimentsService } from './aliments.service';
 import { Auth } from 'src/auth/decorators';
 import { ApiTags } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from 'src/common/pipes';
+import { BaseQueryDto } from 'src/common/dto';
+import { Aliment } from './entities/aliment.entity';
 
 @ApiTags('Aliments')
 @Controller('aliments')
@@ -11,8 +13,8 @@ export class AlimentsController {
   constructor(private readonly alimentsService: AlimentsService) {}
 
   @Get()
-  findAll() {
-    return this.alimentsService.findAll();
+  findAll(@Query() baseQueryDto: BaseQueryDto<Aliment>) {
+    return this.alimentsService.findAll(baseQueryDto);
   }
 
   @Get(':id')
