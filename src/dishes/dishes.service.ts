@@ -24,7 +24,7 @@ export class DishesService {
     try {
       const dish = new this.dishModel({
         ...createDishDto,
-        user,
+        user: user.id,
       });
 
       await dish.save();
@@ -36,13 +36,14 @@ export class DishesService {
   }
 
   //Devuelve todos los documentos de la colección de Mongoose
-  async findAll(page: number, limit: number) {
+  async findAll(page: number, limit: number, user: User) {
     const options = {
       page: page || 1,
       limit: limit || 10,
+      user: user.id
     };
 
-    const dishes = await this.dishModel.paginate({}, options);
+    const dishes = await this.dishModel.paginate({user: user.id}, options);
     return dishes;
   }
 

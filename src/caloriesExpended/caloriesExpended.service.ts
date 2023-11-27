@@ -31,11 +31,12 @@ export class CaloriesExpendedService {
     }
   }
 
-  async findAll(page: number, limit: number): Promise<any> {
+  async findAll(page: number, limit: number, user: User): Promise<any> {
     const options = {
       page: page || 1,
       limit: limit || 0,
+      user: user.id
     };
-    return await this.caloriesExpendedModel.paginate({}, options);
+    return await this.caloriesExpendedModel.paginate({user: user.id}, options);
   }
 }
