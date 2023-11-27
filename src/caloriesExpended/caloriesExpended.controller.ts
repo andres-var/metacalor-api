@@ -28,7 +28,8 @@ export class CaloriesExpendedController {
   async findAll(
     @Query('page') page: number,
     @Query('limit') limit: number,
+    @CurrentUser() user: User
   ): Promise<PaginateResult<CaloriesExpended>> {
-    return this.caloriesExpendedService.findAll(page, limit);
+    return this.caloriesExpendedService.findAll(page, limit, user);
   }
 }

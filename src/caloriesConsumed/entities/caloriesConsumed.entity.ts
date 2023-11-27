@@ -26,11 +26,7 @@ export class CaloriesConsumed {
   @Prop()
   calories: number;
 
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    index: true,
-  })
+  @Prop({ type: mongoose.Schema.Types.ObjectId,ref: 'User', index: true,})
   user: User;
 }
 export type CaloriesConsumedDocument = HydratedDocument<CaloriesConsumed>;
