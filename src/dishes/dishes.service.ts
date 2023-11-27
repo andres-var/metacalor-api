@@ -24,7 +24,7 @@ export class DishesService {
     try {
       const dish = new this.dishModel({
         ...createDishDto,
-        user,
+        user: user.id,
       });
 
       await dish.save();
@@ -36,13 +36,13 @@ export class DishesService {
   }
 
   //Devuelve todos los documentos de la colección de Mongoose
-  async findAll(page: number, limit: number) {
+  async findAll(page: number, limit: number, user:User) {
     const options = {
       page: page || 1,
       limit: limit || 10,
     };
 
-    const dishes = await this.dishModel.paginate({}, options);
+    const dishes = await this.dishModel.paginate({user: user.id}, options);
     return dishes;
   }
 
@@ -58,8 +58,8 @@ export class DishesService {
     return dish;
   }
 
-  async findOneByName(name: string): Promise<string> {
-    const dish = await this.dishModel.findOne({ name: name }).exec();
+  async findOneByName(name: string, user: User): Promise<string> {
+    const dish = await this.dishModel.findOne({ name: name, user: user.id}).exec();
 
     if (!dish) {
       throw new NotFoundException({
