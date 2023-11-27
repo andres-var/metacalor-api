@@ -21,7 +21,7 @@ export class CaloriesExpendedService {
     try {
       const caloriesExpended = new this.caloriesExpendedModel({
         ...createCaloriesExpendedDto,
-        user,
+        user: user.id,
       });
       await caloriesExpended.save();
       return caloriesExpended;
@@ -31,11 +31,11 @@ export class CaloriesExpendedService {
     }
   }
 
-  async findAll(page: number, limit: number): Promise<any> {
+  async findAll(page: number, limit: number, user : User): Promise<any> {
     const options = {
       page: page || 1,
       limit: limit || 0,
     };
-    return await this.caloriesExpendedModel.paginate({}, options);
+    return await this.caloriesExpendedModel.paginate({user: user.id}, options);
   }
 }

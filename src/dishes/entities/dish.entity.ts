@@ -12,7 +12,7 @@ export class Dish {
   @Prop()
   name: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } })
   user: User;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Aliment' }] })

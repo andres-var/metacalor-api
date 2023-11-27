@@ -25,26 +25,28 @@ export class DishesController {
   async findAll(
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,
+    @CurrentUser() user: User
   ) {
-    const result = await this.dishesService.findAll(page, limit);
+    const result = await this.dishesService.findAll(page, limit, user);
     return result;
   }
 
   @Get(':id')
-  findOne(@Param('id',ParseObjectIdPipe) id: string) {
-    return this.dishesService.findOne(id);
+  findOne(@Param('id',ParseObjectIdPipe) id: string,
+          @CurrentUser() user: User) {
+    return this.dishesService.findOne(id, user);
   }
 
   @Patch(':id')
-  async update(@Param('id', ParseObjectIdPipe) id: string, @Body() updateDishDto: UpdateDishDto) {
-    await this.dishesService.findOne(id);
+  async update(@Param('id', ParseObjectIdPipe) id: string, @CurrentUser() user: User, @Body() updateDishDto: UpdateDishDto) {
+    await this.dishesService.findOne(id, user);
     return this.dishesService.update(id, updateDishDto);
   }
 
 
   @Delete(':id')
-  async remove(@Param('id', ParseObjectIdPipe)id: string){
-      await this.dishesService.findOne(id);
+  async remove(@Param('id', ParseObjectIdPipe)id: string, @CurrentUser() user: User){
+      await this.dishesService.findOne(id, user);
       await this.dishesService.remove(id);
       return { message: 'Dish deleted successfully'};
   }

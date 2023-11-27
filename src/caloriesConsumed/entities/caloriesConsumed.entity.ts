@@ -27,7 +27,7 @@ export class CaloriesConsumed {
     @Prop()
     calories: number;
 
-    @Prop({type:[{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]})
+    @Prop({type:{type: mongoose.Schema.Types.ObjectId, ref: 'User'}})
     user: User;
 
 }
