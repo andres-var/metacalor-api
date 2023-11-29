@@ -44,7 +44,7 @@ export class AlimentsService {
 
     const docs = aliments.docs.map((doc) => {
       return {
-        ...doc,
+        ...doc.toJSON(),
         calaries: doc.protein * 4 + doc.carbohydrates * 4 + doc.lipids * 9,
       };
     });
