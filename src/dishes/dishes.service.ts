@@ -11,6 +11,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Dish } from './entities/dish.entity';
 import { User } from 'src/users/entities/user.entity';
 import * as dishesJson from './data/dishes.json';
+import { BaseQueryDto } from 'src/common/dto';
 @Injectable()
 export class DishesService {
   constructor(
@@ -50,15 +51,39 @@ export class DishesService {
   }
 
   //Devuelve todos los documentos de la colección de Mongoose
-  async findAll(page: number, limit: number, user: User) {
-    const options = {
-      page: page || 1,
-      limit: limit || 10,
-      user: user.id
-    };
+  async findAll(baseQuery: BaseQueryDto<Dish>, user: User) {
+    const dishes = await this.dishModel.paginate(
+      {
+        user: user.id,
+        ...baseQuery.filters,
+      },
+      {
+        limit: baseQuery.limit,
+        page: baseQuery.page,
+        sort: baseQuery.sort,
+        populate: 'aliments',
+        projection: {
+          name: 1,
+          createdAt: 1,
+        },
+      },
+    );
 
-    const dishes = await this.dishModel.paginate({user: user.id}, options);
-    return dishes;
+    const docs = dishes.docs.map((dish) => {
+      const calories = dish.aliments.reduce((acc, aliment) => {
+        const { protein, lipids, carbohydrates } = aliment;
+        return protein * 4 + lipids * 9 + carbohydrates * 4 + acc;
+      }, 0);
+      const aliments = dish.aliments.map((aliment) => aliment['id']);
+      return {
+        ...dish.toJSON(),
+        id: dish._id,
+        aliments,
+        calories,
+      };
+    });
+
+    return { ...dishes, docs };
   }
 
   async findOne(id: string): Promise<Dish> {
