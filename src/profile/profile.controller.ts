@@ -17,6 +17,11 @@ export class ProfileController {
     return this.profileService.me(user);
   }
 
+  @Get('position')
+  positionMe(@CurrentUser() user: User) {
+    return this.profileService.positionMe(user);
+  }
+
   @Patch('me')
   update(@CurrentUser() user: User, @Body() updateUserDto: UpdateUserDto) {
     return this.profileService.update(user, updateUserDto);

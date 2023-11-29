@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { HydratedDocument } from 'mongoose';
-
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 @Schema({ timestamps: true })
 export class User {
   id: string;
@@ -66,6 +66,7 @@ export class User {
 export type UserDocument = HydratedDocument<User>;
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.plugin(mongoosePaginate);
 
 UserSchema.set('toJSON', {
   virtuals: true,

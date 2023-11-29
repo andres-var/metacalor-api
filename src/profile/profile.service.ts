@@ -11,6 +11,10 @@ export class ProfileService {
     return await this.usersService.findOne(user.id);
   }
 
+  async positionMe(user: User) {
+    return await this.usersService.position(user.id);
+  }
+
   async update(user: User, updateUserDto: UpdateUserDto) {
     return await this.usersService.update(user.id, updateUserDto);
   }
