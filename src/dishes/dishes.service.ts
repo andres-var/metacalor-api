@@ -72,7 +72,7 @@ export class DishesService {
     const docs = dishes.docs.map((dish) => {
       const calories = dish.aliments.reduce((acc, aliment) => {
         const { protein, lipids, carbohydrates } = aliment;
-        return protein * 4 + lipids * 9 + carbohydrates * 4 + acc;
+        return +(protein * 4 + lipids * 9 + carbohydrates * 4 + acc).toFixed(2);
       }, 0);
       const aliments = dish.aliments.map((aliment) => aliment['id']);
       return {

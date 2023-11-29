@@ -33,7 +33,7 @@ export class AlimentsService {
   }
 
   async findAll(baseQueryDto: BaseQueryDto<Aliment>) {
-    return await this.alimentModel.paginate(
+    const aliments = await this.alimentModel.paginate(
       { ...baseQueryDto.filters },
       {
         page: baseQueryDto.page,
@@ -41,6 +41,18 @@ export class AlimentsService {
         sort: baseQueryDto.sort,
       },
     );
+
+    const docs = aliments.docs.map((doc) => {
+      return {
+        ...doc,
+        calaries: doc.protein * 4 + doc.carbohydrates * 4 + doc.lipids * 9,
+      };
+    });
+
+    return {
+      ...aliments,
+      docs,
+    };
   }
 
   async findOne(id: string) {
