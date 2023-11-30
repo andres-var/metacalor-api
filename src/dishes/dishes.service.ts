@@ -10,18 +10,28 @@ import { PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Dish } from './entities/dish.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Aliment } from 'src/aliments/entities/aliment.entity';
 
 @Injectable()
 export class DishesService {
   constructor(
     //Inyecta el modelo Dish para poder interactuar con la BD
     @InjectModel(Dish.name) private readonly dishModel: PaginateModel<Dish>,
+    @InjectModel(Aliment.name) private readonly alimentModel : PaginateModel<Aliment>
   ) {}
   //Crea un objeto Logger para registrar mensajes de información en la aplicación
   private readonly logger = new Logger(DishesService.name);
 
   async create(createDishDto: CreateDishDto, user: User): Promise<Dish> {
-    try {
+      try {
+      /*for(const alimentID of createDishDto.aliments){
+        const alimentExists= await this.alimentModel.exists({_id: alimentID});
+      
+        if(!alimentExists){
+          throw new Error(`Aliment with Id ${alimentID} does not exist`);
+        }
+      }
+      */
       const dish = new this.dishModel({
         ...createDishDto,
         user: user.id,
@@ -31,7 +41,7 @@ export class DishesService {
       return dish;
     } catch (error) {
       this.logger.error(error);
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error.message);
     }
   }
 
