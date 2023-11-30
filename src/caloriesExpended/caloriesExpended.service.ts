@@ -35,8 +35,17 @@ export class CaloriesExpendedService {
     const options = {
       page: page || 1,
       limit: limit || 0,
-      user: user.id
+      user: user.id,
     };
-    return await this.caloriesExpendedModel.paginate({user: user.id}, options);
+    return await this.caloriesExpendedModel.paginate(
+      {
+        user: user.id,
+        createdAt: {
+          $gte: new Date(new Date().setHours(0, 0, 0)),
+          $lt: new Date(new Date().setHours(23, 59, 59)),
+        },
+      },
+      options,
+    );
   }
 }

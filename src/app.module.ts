@@ -15,6 +15,7 @@ import { ProfileModule } from './profile/profile.module';
 import { RemindersModule } from './reminders/reminders.module';
 import { CaloriesConsumedModule } from './caloriesConsumed/caloriesConsumed.module';
 import { CaloriesExpendedModule } from './caloriesExpended/caloriesExpended.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CaloriesExpendedModule } from './caloriesExpended/caloriesExpended.modu
     RemindersModule,
     CaloriesConsumedModule,
     CaloriesExpendedModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}

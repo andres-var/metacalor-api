@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Date, HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import mongoose from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 import { Dish } from 'src/dishes/entities/dish.entity';
@@ -16,7 +16,7 @@ export class CaloriesConsumed {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }] })
   dish: Dish[];
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Aliments' }] })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Aliment' }] })
   aliments: Aliment[];
 
   @Prop()
@@ -26,7 +26,7 @@ export class CaloriesConsumed {
   @Prop()
   calories: number;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId,ref: 'User', index: true,})
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true })
   user: User;
 }
 export type CaloriesConsumedDocument = HydratedDocument<CaloriesConsumed>;
