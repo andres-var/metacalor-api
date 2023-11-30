@@ -1,8 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ReportsService } from './reports.service';
-import { CurrentUser } from 'src/auth/decorators';
+import { Auth, CurrentUser } from 'src/auth/decorators';
 import { User } from 'src/users/entities/user.entity';
 
+@Auth()
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
