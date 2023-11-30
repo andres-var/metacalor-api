@@ -1,13 +1,15 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ReportsService } from './reports.service';
+import { CurrentUser } from 'src/auth/decorators';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
   @Get()
-  findAll() {
-    return this.reportsService.findAll();
+  findAll(@CurrentUser() user: User) {
+    return this.reportsService.findAll(user);
   }
 
   @Get(':id')

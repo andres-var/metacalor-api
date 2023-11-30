@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as dayjs from 'dayjs';
 import { Model } from 'mongoose';
 import { CaloriesConsumed } from 'src/caloriesConsumed/entities/caloriesConsumed.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ReportsService {
@@ -10,7 +11,7 @@ export class ReportsService {
     @InjectModel(CaloriesConsumed.name)
     private caloriesConsumedModel: Model<CaloriesConsumed>,
   ) {}
-  async findAll() {
+  async findAll(user: User) {
     const startWeek = dayjs().startOf('week').toDate();
     const endWeek = dayjs().endOf('week').toDate();
 
@@ -20,6 +21,7 @@ export class ReportsService {
           $gte: startWeek,
           $lt: endWeek,
         },
+        user: user.id,
       })
       .populate('aliments')
       .populate({ path: 'dish', populate: { path: 'aliments' } })
