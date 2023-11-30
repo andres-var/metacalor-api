@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as dayjs from 'dayjs';
 import { Model } from 'mongoose';
+import { Auth } from 'src/auth/decorators';
 import { CaloriesConsumed } from 'src/caloriesConsumed/entities/caloriesConsumed.entity';
 import { User } from 'src/users/entities/user.entity';
 
+@Auth()
 @Injectable()
 export class ReportsService {
   constructor(
