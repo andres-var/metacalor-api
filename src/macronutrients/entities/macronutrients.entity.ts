@@ -27,7 +27,7 @@ MacronutrientsSchema.set('toJSON', {
     virtuals : true,
     versionKey : true, 
     transform : function(doc, ret){
-        ret.id = ret._id.toString();
+        ret.id = ret._id?.toString();
         delete ret._id;
     },
 });

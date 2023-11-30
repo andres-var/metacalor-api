@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import * as compression from 'compression';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpStatus, Logger, ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { AppModule } from './app.module';
 
@@ -11,7 +12,9 @@ import { useContainer } from 'class-validator';
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.useStaticAssets('public');
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
@@ -21,7 +24,6 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  //   app.enableCors({ origin: process.env.HOST_FRONTEND });
   app.enableCors();
 
   app.useGlobalPipes(

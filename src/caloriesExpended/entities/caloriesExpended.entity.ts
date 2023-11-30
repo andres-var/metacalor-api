@@ -29,7 +29,7 @@ CaloriesExpendedSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
-    ret.id = ret._id.toString();
+    ret.id = ret._id?.toString();
     delete ret._id;
   },
 });

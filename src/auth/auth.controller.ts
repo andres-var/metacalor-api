@@ -25,8 +25,6 @@ export class AuthController {
     private readonly config: ConfigService,
   ) {}
 
-  private readonly HOST_FRONTEND = this.config.get('HOST_FRONTEND');
-
   @Post('login')
   @HttpCode(200)
   @ApiResponse({ status: 200, description: 'Login Success', type: User })
@@ -45,6 +43,6 @@ export class AuthController {
   async verify(@Param('id') id: string, @Res() res: Response) {
     await this.authService.verify(id);
 
-    return res.status(302).redirect(`${this.HOST_FRONTEND}/login`);
+    return res.status(302).redirect(`http://localhost:8080/confirmation.html`);
   }
 }
